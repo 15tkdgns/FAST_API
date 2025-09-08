@@ -22,7 +22,7 @@ def create_book(book:BookCreate, db:Session=Depends()):
 def get_books(db:Session=Depends()):
   return db.query(Book).all()
 
-# 유저 정보 수정
+# 책 정보 수정
 @router.put("/{id}")
 def update_user(update:BookCreate, id:int, db:Session=Depends()):
   book = db.query(Book).filter(Book.id == id).first()
@@ -36,7 +36,7 @@ def update_user(update:BookCreate, id:int, db:Session=Depends()):
   db.refresh(book)
   return {"msg": "책 정보가 수정되었습니다"}
 
-# 유저 삭제
+# 책 삭제
 @router.delete("/{id}")
 def delete_book(id:int, db:Session=Depends()):
   book = db.query(Book).filter(Book.id == id).first()
