@@ -16,7 +16,6 @@ class User(Base):
     password = Column(String(255), nullable=False)
     email = Column(String(100), unique=True, nullable=False)
 
-
 class Book(Base):
     __tablename__ = "book"
     id = Column(Integer, primary_key=True)
