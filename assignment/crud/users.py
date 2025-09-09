@@ -15,7 +15,7 @@ def create_user(user:UserCreate, db:Session=Depends()):
   db.add(new_user)
   db.commit()
   db.refresh(new_user)
-  return {"msg": "유저가 추가되었습니다"}
+  return {"msg": f"{user.username}님이 추가되었습니다"}
 
 # 유저 읽기
 @router.get("/")
@@ -33,7 +33,7 @@ def update_user(update:UserCreate, id:int, db:Session=Depends()):
   user.email = update.email
   db.commit()
   db.refresh(user)
-  return {"msg": "유저정보가 수정되었습니다"}
+  return {"msg": f"{user.username}님의 정보가 수정되었습니다"}
 
 # 유저 삭제
 @router.delete("/{id}")

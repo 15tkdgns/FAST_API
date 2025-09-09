@@ -16,13 +16,13 @@ class OrderCreate(BaseModel):
   user_id:int
   total_price:float
 
-class ItemBase(BaseModel):
+class ItemCreate(BaseModel):
   order_id:int
   book_id:int
   quantity:int
   price:float
 
-class ReviewBase(BaseModel):
+class ReviewCreate(BaseModel):
   user_id:int
   book_id:int
   rating:int

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from assignment.models import Book
 from assignment.schema import BookCreate
 
-router = APIRouter(prefix='/book')
+router = APIRouter(prefix='/books')
 
 # 책 추가
 @router.post('/')
