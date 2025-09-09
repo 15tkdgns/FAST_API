@@ -1,6 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from assignment.models import Review
-from assignment.schema import ReviewCreate
-
-router = APIRouter(prefix='/reviews')
+from assignment.schemas import ReviewCreate

@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from assignment.models import Orders
-from assignment.schema import OrderCreate
+from assignment.schemas import OrderCreate
 
-router = APIRouter(prefix='/orders')

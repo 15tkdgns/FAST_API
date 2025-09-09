@@ -1,46 +1,47 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.future import select
 from assignment.models import User
-from assignment.schema import UserCreate
+from assignment.schemas import UserCreate
 
-router = APIRouter(prefix='/users')
+class UserCrud:
+  # Create - 유저 생성
+  @staticmethod
+  def create_user(user:UserCreate, db:Session) -> User:
+    exist = db.execute(select(User).filter(User.username == user.username)).scalars().first()
+    if exist:
+      raise HTTPException(status_code=404, detail='이미 존재하는 유저입니다')
+    new_user = User(**user.model_dump())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return {"msg":f"{user.username}님이 추가되었습니다"}
 
-# 신규 유저 추가
-@router.post("/")
-def create_user(user:UserCreate, db:Session=Depends()):
-  exist = db.query(User).filter(User.username == user.username).first()
-  if exist:
-    raise HTTPException(status_code=404, detail='이미 존재하는 유저입니다')
-  new_user = User(username=user.username, password=user.password, email=user.email)
-  db.add(new_user)
-  db.commit()
-  db.refresh(new_user)
-  return {"msg": f"{user.username}님이 추가되었습니다"}
+  # Read - id 값으로 유저 정보 조회 router에 연결 할 때 '/{user_id}'로 작업
+  @staticmethod
+  def get_user(user_id:int, db:Session):
+    user_info = db.execute(select(User).filter(User.id == user_id)).scalars().first()
+    return user_info
 
-# 유저 읽기
-@router.get("/")
-def get_users(db:Session=Depends()):
-  return db.query(User).all()
+  # Update - 유저 정보 수정 / router에 연결 할 때 '/{user_id}'로 작업
+  @staticmethod
+  def update_user(user_id:int, update:UserCreate, db:Session):
+    user = db.execute(select(User).filter(User.id == user_id)).scalars().first()
+    if not user:
+      raise HTTPException(status_code=404, detail="확인 불가")
+    user.username = update.username
+    user.password = update.password
+    user.email = update.email
+    db.commit()
+    db.refresh(user)
+    return {"msg":f"{user.username}님의 회원정보가 수정되었습니다"}
 
-# 유저 정보 수정
-@router.put("/{id}")
-def update_user(update:UserCreate, id:int, db:Session=Depends()):
-  user = db.query(User).filter(User.id == id).first()
-  if not user:
-    raise HTTPException(status_code=404, detail="확인 불가합니다")
-  user.username = update.username
-  user.password = update.password
-  user.email = update.email
-  db.commit()
-  db.refresh(user)
-  return {"msg": f"{user.username}님의 정보가 수정되었습니다"}
-
-# 유저 삭제
-@router.delete("/{id}")
-def delete_user(id:int, db:Session=Depends()):
-  user = db.query(User).filter(User.id == id).first()
-  if not user:
-    raise HTTPException(status_code=404, detail="유저 확인 불가")
-  db.delete(user)
-  db.commit()
-  return {"msg": "유저가 삭제되었습니다"}
+  # Delete - 유저 정보 삭제 / router에 연결 할 때 query로 유저 네임 넣으면 삭제
+  @staticmethod
+  def delete_user(username:str, db:Session):
+    user = db.execute(select(User).filter(User.username == username)).scalars().first()
+    if not user:
+      raise HTTPException(status_code=404, detail = "유저 확인 불가")
+    db.delete(user)
+    db.commit()
+    return {"msg":"유저 정보가 삭제되었습니다"}
