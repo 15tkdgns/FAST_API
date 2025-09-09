@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from assignment.SQLAlchemy_ORM import Order
-from assignment.schemas import OrderCreate
+from SQLAlchemy_ORM import Order
+from schemas import OrderCreate
 
 class OrderCrud:
   # Create - 주문정보 생성

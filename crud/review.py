@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from assignment.SQLAlchemy_ORM import Review
-from assignment.schemas import ReviewCreate
+from SQLAlchemy_ORM import Review
+from schemas import ReviewCreate
 
 class ReviewCrud:
   # Create - 리뷰 생성

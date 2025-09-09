@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from assignment.SQLAlchemy_ORM import User
-from assignment.schemas import UserCreate
+from SQLAlchemy_ORM import User
+from schemas import UserCreate
 
 class UserCrud:
   # Create - 유저 생성
