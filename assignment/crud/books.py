@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from assignment.models import Book
+from assignment.SQLAlchemy_ORM import Book
 from assignment.schemas import BookCreate
 
 class BookCrud:

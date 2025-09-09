@@ -1,17 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from assignment.models import Item
+from assignment.SQLAlchemy_ORM import Item
 from assignment.schemas import ItemCreate
-
-    # id INT AUTO_INCREMENT PRIMARY KEY,
-    # order_id INT NOT NULL,
-    # book_id INT NOT NULL,
-    # quantity INT NOT NULL DEFAULT 1,
-    # price DECIMAL(10, 2) NOT NULL,
-    # FOREIGN KEY (order_id) REFERENCES orders(id),
-    # FOREIGN KEY (book_id) REFERENCES book(id)
-
 
 class OrderCrud:
   # Create
@@ -24,7 +15,10 @@ class OrderCrud:
     return {"msg", "아이템이 추가되었습니다"}
   
   # Read
-
+  @staticmethod
+  def get_items(db:Session):
+    all_items = db.execute(select(Item)).scalars().all()
+    return all_items
   
   # Update
   @staticmethod

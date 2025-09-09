@@ -1,14 +1,14 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from assignment.models import Orders
+from assignment.SQLAlchemy_ORM import Order
 from assignment.schemas import OrderCreate
 
 class OrderCrud:
   # Create - 주문정보 생성
   @staticmethod
   def create_order(order:OrderCreate, db:Session):
-    new_order = Orders(**order.model_dump())
+    new_order = Order(**order.model_dump())
     db.add(new_order)
     db.commit()
     db.refresh(new_order)
@@ -17,7 +17,7 @@ class OrderCrud:
   # Read - 아이디에 맞는 주문 정보 조회 / '/{order_id} 로 작업'
   @staticmethod
   def get_order(order_id:int, db:Session):
-    order_data = db.execute(select(Orders).filter(Orders.id == order_id)).scalars().first()
+    order_data = db.execute(select(Order).filter(Order.id == order_id)).scalars().first()
     if not order_data:
       raise HTTPException(status_code=404, detail="주문 정보 확인 불가")
     return order_data
@@ -25,7 +25,7 @@ class OrderCrud:
   # Update - 가격만 수정가능
   @staticmethod
   def update_order_price(order_id:int, price:float, db:Session):
-    order = db.execute(select(Orders).filter(Orders.id == order_id)).scalars().first()
+    order = db.execute(select(Order).filter(Order.id == order_id)).scalars().first()
     if not order:
       raise HTTPException(status_code=404, detail="주문 정보 확인 불가")
     order.total_price = price
@@ -36,7 +36,7 @@ class OrderCrud:
   # delete
   @staticmethod
   def delete_order(order_id:int, db:Session):
-    order = db.execute(select(Orders).filter(Orders.id == order_id)).scalars().first()
+    order = db.execute(select(Order).filter(Order.id == order_id)).scalars().first()
     
     db.delete(order)
     db.commit()
