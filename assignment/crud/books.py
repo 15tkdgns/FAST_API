@@ -17,12 +17,11 @@ class BookCrud:
     db.refresh(new_book)
     return {"msg":f"{book.title} 도서 정보가 추가되었습니다"}
 
-  # Read - id 값으로 유저 정보 조회 router에 연결 할 때 '/{book_id}'로 작업
+  # Read - 도서 전체 조회
   @staticmethod
   def get_books(db:Session):
-    result = db.execute(select(Book)).scalars().all()
-    return result
-
+    all_books = db.execute(select(Book)).scalars().all()
+    return all_books
 
   # Update - 도서 정보 수정 / router에 연결 할 때 '/{book_id}'로 작업
   @staticmethod
