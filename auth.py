@@ -13,9 +13,10 @@ oauth_scheme=OAuth2PasswordBearer(tokenUrl="token")
 
 # 토큰 생성
 def create_token(data:dict, expire:timedelta|None=None)->str:
-    exp=datetime.now(timezone.utc)+timedelta(minutes=60)
-    data['exp']=exp
-    return jwt.encode(data, SECRET_KEY, algorithm="HS256")
+    payload=data.copy()
+    exp=datetime.now(timezone.utc)+(expire or timedelta(minutes=60))
+    payload['exp']=exp
+    return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
 # 토큰 검증
 def verify_token(token:str)->str:
