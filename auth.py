@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import timedelta, timezone, datetime
@@ -6,11 +6,11 @@ import jwt
 from database import get_db
 from model import User
 
-app=FastAPI()
+auth_router=APIRouter(prefix="/auth", tags=["auth"])
 
 # JWT 설정
 SECRET_KEY="secret_key"
-oauth_scheme=OAuth2PasswordBearer(tokenUrl="token")
+oauth_scheme=OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 # 토큰 생성
 def create_token(data:dict, expire:timedelta|None=None)->str:
@@ -31,7 +31,7 @@ def verify_token(token:str)->str:
         raise
 
 # 토큰 발급 엔드포인트
-@app.post("/token")
+@auth_router.post("/token")
 def generate_token(f_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_db)):
     user=db.query(User).filter(User.username==f_data.username).first()
     if not user or user.password != f_data.password:
@@ -42,7 +42,7 @@ def generate_token(f_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depend
     
 
 # 토큰 검증 엔드포인트
-@app.post("/verify")
+@auth_router.post("/verify")
 def verify(token:str=Depends(oauth_scheme)):
     username=verify_token(token)
     return {"msg":f"Valid Token for {username}"}
