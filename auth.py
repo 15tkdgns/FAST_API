@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from datetime import timedelta, timezone, datetime
 import jwt
 from database import get_db
+from model import User
 
 app=FastAPI()
 
@@ -31,11 +32,11 @@ def verify_token(token:str)->str:
 
 # 토큰 발급 엔드포인트
 @app.post("/token")
-def token(f_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_db)):
-    user=db.get(f_data.username)
-    if not user or user['password'] != f_data.password:
+def generate_token(f_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_db)):
+    user=db.query(User).filter(User.username==f_data.username).first()
+    if not user or user.password != f_data.password:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token")
-    access_token=create_token(data={"sub":user['username']},
+    access_token=create_token(data={"sub":user.username},
                               expire=timedelta(minutes=60))
     return {"access_token":access_token, "token_type":"bearer"}
     
@@ -44,4 +45,4 @@ def token(f_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_db)
 @app.post("/verify")
 def verify(token:str=Depends(oauth_scheme)):
     username=verify_token(token)
-    return {"msg":"Valid Token"}
+    return {"msg":f"Valid Token for {username}"}
