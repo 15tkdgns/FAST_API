@@ -1,13 +1,10 @@
-#사용법
-#from FAST_API.SQLAlchemy_ORM import (Base, User, Book, Order, Item, Review)
-
 from sqlalchemy import (
     Column, Integer, String, Date, DateTime,
     ForeignKey, DECIMAL, Text
 )
-from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
-Base = declarative_base()
+from database import Base
+
 
 class User(Base):
     __tablename__ = "user"

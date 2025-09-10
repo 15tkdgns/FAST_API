@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from SQLAlchemy_ORM import User
+from model import User
 from schemas import UserCreate
 
 class UserCrud:

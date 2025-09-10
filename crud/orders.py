@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from SQLAlchemy_ORM import Order
+from model import Order
 from schemas import OrderCreate
 
 class OrderCrud:

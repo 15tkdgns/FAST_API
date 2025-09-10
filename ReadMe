@@ -1,0 +1,10 @@
+주제 : 온라인 서점 
+그룹 : 김가현, 김민욱, 박상훈, 하태호
+마감기한 : ~9/15
+역할 : 
+      1. 인증 및 권한 : 김가현
+      2. Router, RESTful : 김민욱
+      3. DB, SQLAlchemy : 박상훈
+      4. Pydantic, CRUD : 하태호
+
+사용한 테이블 : 5개(user, book, orders, item, review)
