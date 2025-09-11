@@ -7,11 +7,11 @@ from database import get_db
 
 router = APIRouter(prefix="/book", tags=["Books"])
 
-@router.post("/", summary="도서 생성", status_code=201)
+@router.post("/create", summary="도서 생성", status_code=201)
 def create_book(book: BookCreate, db: Session = Depends(get_db)):
     return BookCrud.create_book(book, db) # 생성
 
-@router.get("/", summary="도서 목록")
+@router.get("/list", summary="도서 목록")
 def list_books(
     author: Optional[str] = Query(None, min_length=1, description="저자명 필터"),
     min_price: Optional[float] = Query(None, ge=0, description="최소 가격"),
@@ -27,7 +27,7 @@ def list_books(
         books = [b for b in books if float(b.price) <= float(max_price)]
     return books # 필터링 목록
 
-@router.get("/{book_id}", summary="도서 단건 조회")
+@router.get("/detail/{book_id}", summary="도서 단건 조회")
 def get_book(book_id: int = Path(..., ge=1), db: Session = Depends(get_db)):
 # 필요 시 CRUD에 전용 메서드 추가 권장
     books = BookCrud.get_books(db) # 전체 조회
@@ -36,7 +36,7 @@ def get_book(book_id: int = Path(..., ge=1), db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="도서 확인 불가")
     return match # 단건
 
-@router.put("/{book_id}", summary="도서 수정")
+@router.put("/update/{book_id}", summary="도서 수정")
 def update_book(
     book_id: int = Path(..., ge=1),
     update: BookCreate = ...,
@@ -44,6 +44,6 @@ def update_book(
     ):
     return BookCrud.update_book(book_id, update, db) # 수정
 
-@router.delete("/", summary="도서 삭제(제목)")
+@router.delete("/delete", summary="도서 삭제(제목)")
 def delete_book(title: str = Query(..., min_length=1), db: Session = Depends(get_db)):
     return BookCrud.delete_book(title, db) # 삭제
