@@ -23,8 +23,5 @@ def update_user(user_id:int = Path(..., ge=1), update:UserCreate|None=None, db:S
 
 # @router.delete("/")
 @router.delete("/delete")
-def delete_user(
-  username: str = Query(..., min_length=1),
-  db: Session = Depends(get_db),
-  ):
+def delete_user(username: str = Query(..., min_length=1),db: Session = Depends(get_db)):
   return UserCrud.delete_user(username, db)
