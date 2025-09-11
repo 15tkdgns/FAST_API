@@ -22,9 +22,9 @@ def update_user(user_id:int = Path(..., ge=1), update:UserCreate|None=None, db:S
   return UserCrud.update_user(user_id, update, db)
 
 # @router.delete("/")
-@router.delete("/delete", summary="유저 삭제 (username 쿼리) ")
+@router.delete("/delete")
 def delete_user(
-  username: str = Query(..., min_length=1, description="삭제할 유저의 username"),
+  username: str = Query(..., min_length=1),
   db: Session = Depends(get_db),
   ):
   return UserCrud.delete_user(username, db)
