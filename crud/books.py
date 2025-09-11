@@ -35,7 +35,7 @@ class BookCrud:
     book.price = update.price
     db.commit()
     db.refresh(book)
-    return {"msg":"도서 정보가 수정되었습니다"}
+    return {"msg":f"{book.title}도서 정보가 수정되었습니다"}
 
   # Delete - 도서 정보 삭제 / router에 연결 할 때 query로 타이틀 넣으면 삭제
   @staticmethod
@@ -45,4 +45,4 @@ class BookCrud:
       raise HTTPException(status_code=404, detail = "도서 확인 불가")
     db.delete(book)
     db.commit()
-    return {"msg":"도서 정보가 삭제되었습니다"}
+    return {"msg":"도서가 삭제되었습니다"}
