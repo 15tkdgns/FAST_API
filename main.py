@@ -12,9 +12,9 @@ app.add_middleware(SessionMiddleware,secret_key = "session_secret")
 
 app.include_router(user.router)
 app.include_router(book.router)
-# app.include_router(order.router)
-# app.include_router(item.router)
-# app.include_router(review.router)
+app.include_router(order.router)
+app.include_router(item.router)
+app.include_router(review.router)
 
 # auth router
 app.include_router(auth_router)

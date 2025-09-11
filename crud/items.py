@@ -12,7 +12,7 @@ class OrderCrud:
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
-    return {"msg", "아이템이 추가되었습니다"}
+    return {"msg", "상품이 추가되었습니다"}
   
   # Read
   @staticmethod
@@ -25,11 +25,11 @@ class OrderCrud:
   def update_item(item_id:int, quantity:int, db:Session):
     item = db.execute(select(Item).filter(Item.id == item_id))
     if not item:
-      raise HTTPException(status_code=404, detail='아이템 확인 불가')
+      raise HTTPException(status_code=404, detail='상품 확인 불가')
     item.quantity = quantity
     db.commit()
     db.refresh(item)
-    return {"msg":"수정되었습니다"}
+    return {"msg":"상품 정보가 수정되었습니다"}
   
   # Delete
   @staticmethod
@@ -39,4 +39,4 @@ class OrderCrud:
       raise HTTPException(status_code=404, detail="아이템 확인 불가")
     db.delete(item)
     db.commit()
-    return {"msg":"삭제되었습니다"}
+    return {"msg":"상품이 삭제되었습니다"}

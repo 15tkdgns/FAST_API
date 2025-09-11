@@ -30,7 +30,7 @@ class OrderCrud:
       raise HTTPException(status_code=404, detail="주문 정보 확인 불가")
     order.total_price = price
     db.commit()
-    db.refresh()
+    db.refresh(order)
     return {"msg":f"{order.id}의 주문가격을 변경했습니다"}
   
   # delete

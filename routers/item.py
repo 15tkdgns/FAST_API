@@ -8,11 +8,11 @@ router = APIRouter(prefix="/item", tags=["Items"])
 
 @router.post("/")
 def create_item(item: ItemCreate, db: Session = Depends(get_db)):
-return ItemCrud.create_item(item, db) # 생성
+  return ItemCrud.create_item(item, db) # 생성
 
 @router.get("/")
 def get_items(db: Session = Depends(get_db)):
-return ItemCrud.get_items(db) # 전체 조회
+  return ItemCrud.get_items(db) # 전체 조회
 
 @router.put("/{item_id}")
 def update_item(
@@ -20,8 +20,8 @@ item_id: int = Path(..., ge=1),
 quantity: int = Query(..., ge=1),
 db: Session = Depends(get_db),
 ):
-return ItemCrud.update_item(item_id, quantity, db) # 수량 변경
+  return ItemCrud.update_item(item_id, quantity, db) # 수량 변경
 
 @router.delete("/{item_id}")
 def delete_item(item_id: int = Path(..., ge=1), db: Session = Depends(get_db)):
-return ItemCrud.delete_item(item_id, db) # 삭제
+  return ItemCrud.delete_item(item_id, db) # 삭제

@@ -1,10 +1,6 @@
-from sqlalchemy import (
-    Column, Integer, String, Date, DateTime,
-    ForeignKey, DECIMAL, Text
-)
+from sqlalchemy import (Column, Integer, String, Date, DateTime, ForeignKey, Float, Text)
 from sqlalchemy.sql import func
 from database import Base
-
 
 class User(Base):
     __tablename__ = "user"
@@ -19,14 +15,14 @@ class Book(Base):
     title = Column(String(255), nullable=False)
     author = Column(String(100), nullable=False)
     pub_date = Column(Date, nullable=False)
-    price = Column(DECIMAL(10, 2), nullable=False)
+    price = Column(Float, nullable=False)
 
 class Order(Base):
     __tablename__ = "orders"
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     order_date = Column(DateTime, server_default=func.now()) # 디폴트 현재시간
-    total_price = Column(DECIMAL(10, 2), nullable=False)
+    total_price = Column(Float, nullable=False)
 
 class Item(Base):
     __tablename__ = "item"
@@ -34,7 +30,7 @@ class Item(Base):
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
     book_id = Column(Integer, ForeignKey("book.id"), nullable=False)
     quantity = Column(Integer, nullable=False, default=1)
-    price = Column(DECIMAL(10, 2), nullable=False)
+    price = Column(Float, nullable=False)
 
 class Review(Base):
     __tablename__ = "review"

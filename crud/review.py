@@ -22,7 +22,7 @@ class ReviewCrud:
   
   # Update
   @staticmethod
-  def update_review(review_id:int, quantity:int, db:Session):
+  def update_review(review_id:int, db:Session):
     update = db.execute(select(Review).filter(Review.id == review_id)).scalars().first()
     if not update:
       raise HTTPException(status_code=404, detail='리뷰 확인 불가')
@@ -32,7 +32,7 @@ class ReviewCrud:
     Review.comment = update.comment
     db.commit()
     db.refresh(update)
-    return {"msg":"수정되었습니다"}
+    return {"msg":"리뷰가 수정되었습니다"}
 
   # Delete
   @staticmethod
@@ -42,4 +42,4 @@ class ReviewCrud:
       raise HTTPException(status_code=404, detail="리뷰 확인 불가")
     db.delete(review)
     db.commit()
-    return {"msg":"삭제되었습니다"}
+    return {"msg":"리뷰가 삭제되었습니다"}
