@@ -22,9 +22,9 @@ class ReviewCrud:
   
   # Update
   @staticmethod
-  def update_review(review_id:int, db:Session):
-    update = db.execute(select(Review).filter(Review.id == review_id)).scalars().first()
-    if not update:
+  def update_review(review_id:int, update:ReviewCreate, db:Session):
+    review = db.execute(select(Review).filter(Review.id == review_id)).scalars().first()
+    if not review:
       raise HTTPException(status_code=404, detail='리뷰 확인 불가')
     Review.user_id = update.user_id
     Review.book_id = update.book_id
@@ -37,7 +37,7 @@ class ReviewCrud:
   # Delete
   @staticmethod
   def delete_review(review_id:int, db:Session):
-    review = db.execute(select(Review).filter(Review.id == review_id))
+    review = db.execute(select(Review).filter(Review.id == review_id)).scalars().first()
     if not review:
       raise HTTPException(status_code=404, detail="리뷰 확인 불가")
     db.delete(review)

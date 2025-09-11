@@ -23,7 +23,7 @@ class OrderCrud:
   # Update
   @staticmethod
   def update_item(item_id:int, quantity:int, db:Session):
-    item = db.execute(select(Item).filter(Item.id == item_id))
+    item = db.execute(select(Item).filter(Item.id == item_id)).scalars().first()
     if not item:
       raise HTTPException(status_code=404, detail='상품 확인 불가')
     item.quantity = quantity
@@ -34,7 +34,7 @@ class OrderCrud:
   # Delete
   @staticmethod
   def delete_item(item_id:int, db:Session):
-    item = db.execute(select(Item).filter(Item.id == item_id))
+    item = db.execute(select(Item).filter(Item.id == item_id)).scalars().first()
     if not item:
       raise HTTPException(status_code=404, detail="아이템 확인 불가")
     db.delete(item)
