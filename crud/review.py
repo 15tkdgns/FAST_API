@@ -31,7 +31,7 @@ class ReviewCrud:
     Review.rating = update.rating
     Review.comment = update.comment
     db.commit()
-    db.refresh(update)
+    db.refresh(review)
     return {"msg":"리뷰가 수정되었습니다"}
 
   # Delete
